@@ -1,0 +1,7 @@
+name: BasicImprovements
+version: ${project.version}
+main: me.mob.basicimprovements.basicimprovements.basicimprovements.BasicImprovements
+api-version: 1.16
+prefix: BasicImprovements
+authors: [Mobmaker]
+description: Implements some basic features, like /home, and /spawn, and some other cool crap ig.
