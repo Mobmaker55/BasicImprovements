@@ -18,7 +18,8 @@ public class ImprovementStorage {
     public ImprovementStorage(BasicImprovements bi) {
         this.bi = bi;
         getData();
-        loadl();
+        loadpW();
+        loadhL();
     }
 
     public static void getData() {
@@ -36,13 +37,51 @@ public class ImprovementStorage {
         data = YamlConfiguration.loadConfiguration(dataFile);
     }
 
-    public void loadl() {
-        ConfigurationSection section = data.getConfigurationSection("locations");
+    public void loadpW() {
+        ConfigurationSection section = data.getConfigurationSection("publicWarps");
         if (section != null) {
             section.getKeys(false).forEach(key -> {
                 Location loc = section.getLocation(key);
-                pl.pwarps.put(key, loc);
+                pl.publicWarps.put(key, loc);
             });
+        }
+    }
+
+    public void loadhL() {
+        ConfigurationSection section = data.getConfigurationSection("homeLocations");
+        if (section != null) {
+            section.getKeys(false).forEach(key -> {
+                Location loc = section.getLocation(key);
+                pl.homeLocations.put(key, loc);
+            });
+        }
+    }
+
+    public void savepW() {
+        if (!pl.publicWarps.isEmpty()) {
+            if (pl.publicWarps.size() > 0) {
+                pl.publicWarps.forEach((key, value) -> data.set("publicWarps." + key, value));
+                try {
+                    data.save(dataFile);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+
+
+    public void savehL() {
+        if (!pl.homeLocations.isEmpty()) {
+            if (pl.homeLocations.size() > 0) {
+                pl.homeLocations.forEach((key, value) -> data.set("homeLocations." + key, value));
+                try {
+                    data.save(dataFile);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 }

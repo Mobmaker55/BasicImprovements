@@ -5,3 +5,33 @@ api-version: 1.16
 prefix: BasicImprovements
 authors: [Mobmaker]
 description: Implements some basic features, like /home, and /spawn, and some other cool crap ig.
+commands:
+  warp:
+    description: Warp to a location
+    usage: /<command> [warp name]
+
+  setwarp:
+    description: Set a warp
+    permission: basicimprovements.admin
+    usage: /<command> [warp name]
+
+  delwarp:
+    description: Remove a warp
+    permission: basicimprovements.admin
+    usage: /<command> [warp name]
+
+  home:
+    description: Go to your home
+    usage: /<command>
+
+  sethome:
+    description: Set your home
+    usage: /<command>
+
+  back:
+    description: Go back to where you were before /warp or /home.
+    usage: /<command>
+
+permissions:
+  basicimprovements.admin:
+    description: The stub that lets you use admin commands.
