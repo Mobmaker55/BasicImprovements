@@ -1,4 +1,4 @@
-package me.mob.basicimprovements.basicimprovements.basicimprovements;
+package me.mob.basicimprovements;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

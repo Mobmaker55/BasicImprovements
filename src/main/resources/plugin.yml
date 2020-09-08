@@ -1,6 +1,6 @@
 name: BasicImprovements
 version: ${project.version}
-main: me.mob.basicimprovements.basicimprovements.basicimprovements.BasicImprovements
+main: me.mob.basicimprovements.BasicImprovements
 api-version: 1.16
 prefix: BasicImprovements
 authors: [Mobmaker]
@@ -31,6 +31,18 @@ commands:
   back:
     description: Go back to where you were before /warp or /home.
     usage: /<command>
+
+  ping:
+    description: Lets you check ping of someone.
+    usage: |
+      /<command> - Checks your ping.
+      /<command> [player] - Checks another player's ping.
+
+  playtime:
+    description: Check the amount of time someone's played on the server.
+    usage: |
+      /<command> - Checks your playtime.
+      /<command> [player] - Checks another player's playtime.
 
 permissions:
   basicimprovements.admin:

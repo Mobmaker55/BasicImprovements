@@ -1,5 +1,6 @@
-package me.mob.basicimprovements.basicimprovements.basicimprovements;
+package me.mob.basicimprovements.data;
 
+import me.mob.basicimprovements.BasicImprovements;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
