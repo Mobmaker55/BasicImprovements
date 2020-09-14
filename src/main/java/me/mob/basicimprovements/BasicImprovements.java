@@ -20,12 +20,14 @@ public final class BasicImprovements extends JavaPlugin {
     public HashMap<String, UUID> offlinePlayers = new HashMap<>();
     public HashMap<String, Location> backLoc = new HashMap<>();
     public HashMap<Player, Integer> warpTasks = new HashMap<>();
+    public boolean Econ;
 
 
     @Override
     public void onEnable() {
         instanceClasses();
         improvementStorage = new ImprovementStorage(this);
+        Econ = getServer().getPluginManager().isPluginEnabled("BasicEcon");
 
         this.getCommand("warp").setExecutor(new TPCommands());
         this.getCommand("setwarp").setExecutor(new TPCommands());

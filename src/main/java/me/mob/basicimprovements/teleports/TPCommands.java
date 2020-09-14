@@ -7,7 +7,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.PluginManager;
 import org.bukkit.scheduler.BukkitScheduler;
 
 import java.util.ArrayList;
@@ -19,7 +18,6 @@ public class TPCommands implements CommandExecutor, TabCompleter {
 
     private final BasicImprovements plugin = BasicImprovements.getInstance;
     private final BukkitScheduler scheduler = getServer().getScheduler();
-    private final PluginManager manager = getServer().getPluginManager();
 
 
 

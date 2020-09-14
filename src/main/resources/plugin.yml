@@ -4,6 +4,7 @@ main: me.mob.basicimprovements.BasicImprovements
 api-version: 1.16
 prefix: BasicImprovements
 authors: [Mobmaker]
+softdepend: [BasicEcon]
 description: Implements some basic features, like /home, and /spawn, and some other cool crap ig.
 commands:
   warp:

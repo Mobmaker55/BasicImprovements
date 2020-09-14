@@ -17,17 +17,20 @@ public class TPEvents implements Listener {
 
     private final BasicImprovements plugin = BasicImprovements.getInstance;
     private final BukkitScheduler scheduler = getServer().getScheduler();
+    private int count = 0;
 
     @EventHandler
     public void playerMove(PlayerMoveEvent event) {
         if (plugin.warpTasks.containsKey(event.getPlayer())) {
-            int count = 0;
+
             if (event.getTo().getX() != event.getFrom().getX() || event.getTo().getZ() != event.getFrom().getZ() || event.getTo().getY() != event.getFrom().getY()) {
                 count++;
             }
             if (count >= 2) {
                 scheduler.cancelTask(plugin.warpTasks.get(event.getPlayer()));
                 event.getPlayer().sendMessage(ChatColor.RED + "§lHEY! §r§7You moved! Warp cancelled.");
+                plugin.warpTasks.remove(event.getPlayer());
+                count = 0;
             }
         }
     }
@@ -38,7 +41,8 @@ public class TPEvents implements Listener {
             Player player = getPlayer(event.getEntity().getUniqueId());
             if (plugin.warpTasks.containsKey(player)) {
                 scheduler.cancelTask(plugin.warpTasks.get(player));
-                player.sendMessage(ChatColor.RED + "§lHEY! §r§7You moved! Warp cancelled.");
+                player.sendMessage(ChatColor.RED + "§lHEY! §r§7You took damage! Warp cancelled.");
+                plugin.warpTasks.remove(player);
             }
         }
     }
