@@ -2,6 +2,9 @@ package me.mob.basicimprovements.teleports;
 
 import me.mob.basicimprovements.BasicImprovements;
 import org.bukkit.ChatColor;
+import org.bukkit.Chunk;
+import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -11,6 +14,7 @@ import org.bukkit.scheduler.BukkitScheduler;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import static org.bukkit.Bukkit.getServer;
 
@@ -31,7 +35,7 @@ public class TPCommands implements CommandExecutor, TabCompleter {
                 if (args.length == 1) {
                     String locName = args[0].toLowerCase();
                     if (plugin.publicWarps.containsKey(locName)) {
-                        int taskid = scheduler.runTaskLater(plugin, new TPRunnable(locName, player, 1), 5*20).getTaskId();
+                        int taskid = scheduler.runTaskLater(plugin, new TPRunnable(locName, player, 1), 5 * 20).getTaskId();
                         plugin.warpTasks.put(player, taskid);
                         player.sendMessage(ChatColor.DARK_PURPLE + "Warp started§7. Stay still for §5five §7seconds, and do not take damage.");
                     } else {
@@ -46,7 +50,7 @@ public class TPCommands implements CommandExecutor, TabCompleter {
                     String lc = player.getName().toLowerCase();
                     if (plugin.homeLocations.containsKey(lc)) {
                         if (!plugin.warpTasks.containsKey(player)) {
-                            int taskid = scheduler.runTaskLater(plugin, new TPRunnable(lc, player, 2), 20*5).getTaskId();
+                            int taskid = scheduler.runTaskLater(plugin, new TPRunnable(lc, player, 2), 20 * 5).getTaskId();
                             plugin.warpTasks.put(player, taskid);
                             player.sendMessage(ChatColor.DARK_PURPLE + "Warp started§7. Stay still for §5five §7seconds, and do not take damage.");
                         }
@@ -61,7 +65,7 @@ public class TPCommands implements CommandExecutor, TabCompleter {
                 if (args.length == 0) {
                     if (plugin.backLoc.containsKey(player.getName())) {
                         if (!plugin.warpTasks.containsKey(player)) {
-                            int taskid = scheduler.runTaskLater(plugin, new TPRunnable(player.getName(), player, 3), 20*5).getTaskId();
+                            int taskid = scheduler.runTaskLater(plugin, new TPRunnable(player.getName(), player, 3), 20 * 5).getTaskId();
                             plugin.warpTasks.put(player, taskid);
                             player.sendMessage(ChatColor.DARK_PURPLE + "§Warp started§7. Stay still for §5five §7seconds, and do not take damage.");
                         }
@@ -117,10 +121,49 @@ public class TPCommands implements CommandExecutor, TabCompleter {
                     }
                 } */
             }
+            if (command.getName().equalsIgnoreCase("randomtp")) {
+                Random rand = new Random();
+                World world = player.getWorld();
+                if (args.length == 0) {
+                    int safe = 0;
+                    while (true) {
+                        int rtpX = rand.nextInt(10000 + 10000) - 10000;
+                        int rtpZ = rand.nextInt(10000 + 10000) - 10000;
+                        Location loc = new Location(world, rtpX, 63, rtpZ, player.getLocation().getYaw(), player.getLocation().getPitch());
+                        Chunk chunk = loc.getChunk();
+                        chunk.load();
+                        for (int i = 64; i <= 256; i++) {
+                            loc.setY(i);
+                            if (loc.getBlock().isEmpty()) {
+                                safe ++;
+                                if (safe == 6) {
+                                    loc.setY(i-7);
+                                    if (!loc.getBlock().isEmpty()) {
+                                        if (!loc.getBlock().isLiquid()) {
+                                            loc.setY(i-5);
+                                            player.teleport(loc);
+                                            return true;
+                                        } else {
+                                            safe = 0;
+                                        }
+                                    } else {
+                                        safe = 0;
+                                    }
+                                }
+                            } else {
+                                safe = 0;
+                            }
+                        }
+                    }
+
+
+                }
+            }
 
         }
         return false;
     }
+
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {

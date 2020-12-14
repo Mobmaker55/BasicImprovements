@@ -45,12 +45,6 @@ commands:
       /<command> - Checks your playtime.
       /<command> [player] - Checks another player's playtime.
 
-  randomtp:
-    description: Randomly teleport somewhere.
-    aliases: [rtp]
-    usage: |
-      /<command> - Teleports you somewhere.
-
 permissions:
   basicimprovements.admin:
     description: The stub that lets you use admin commands.
