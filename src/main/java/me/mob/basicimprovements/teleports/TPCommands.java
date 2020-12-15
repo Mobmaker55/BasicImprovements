@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitScheduler;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -23,7 +24,7 @@ public class TPCommands implements CommandExecutor, TabCompleter {
     private final BasicImprovements plugin = BasicImprovements.getInstance;
     private final BukkitScheduler scheduler = getServer().getScheduler();
 
-
+    HashMap<Player, Integer> warpTasks = new HashMap<>();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -122,6 +123,15 @@ public class TPCommands implements CommandExecutor, TabCompleter {
                 } */
             }
             if (command.getName().equalsIgnoreCase("randomtp")) {
+                double timestamp = System.currentTimeMillis();
+                if (plugin.tpCooldown.containsKey(player)) {
+                    double pTPC = plugin.tpCooldown.get(player);
+                    if (pTPC >= (timestamp - 3600000)) {
+                        double remaining = (double) Math.round((60-((timestamp - pTPC)/60000)) * 10) / 10;
+                        player.sendMessage(ChatColor.RED + "You can't run this command yet! You still have " + ChatColor.GOLD + remaining + ChatColor.RED + " minutes left!");
+                        return true;
+                    }
+                }
                 Random rand = new Random();
                 World world = player.getWorld();
                 if (args.length == 0) {
@@ -142,6 +152,7 @@ public class TPCommands implements CommandExecutor, TabCompleter {
                                         if (!loc.getBlock().isLiquid()) {
                                             loc.setY(i-5);
                                             player.teleport(loc);
+                                            plugin.tpCooldown.put(player, timestamp);
                                             return true;
                                         } else {
                                             safe = 0;

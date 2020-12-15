@@ -18,6 +18,8 @@ public final class BasicImprovements extends JavaPlugin {
     public HashMap<String, Location> homeLocations = new HashMap<>();
     public HashMap<String, Location> backLoc = new HashMap<>();
     public HashMap<Player, Integer> warpTasks = new HashMap<>();
+    public HashMap<Player, Double> tpCooldown = new HashMap<>();
+
     public boolean Econ;
 
 
@@ -27,7 +29,6 @@ public final class BasicImprovements extends JavaPlugin {
         instanceClasses();
         improvementStorage = new ImprovementStorage(this);
         Econ = getServer().getPluginManager().isPluginEnabled("BasicEcon");
-
         if (getConfig().getBoolean("warps")) {
             this.getCommand("warp").setExecutor(new TPCommands());
             this.getCommand("setwarp").setExecutor(new TPCommands());
