@@ -15,9 +15,9 @@ public enum Messages {
     WARP_CANCEL_MOVE("warp.cancel.move", "&c&lHEY! &r&7You moved! Warp cancelled."),
     WARP_CANCEL_DAMAGE("warp.cancel.damage", "&c&lHEY! &r&7You took damage! Warp cancelled."),
     WARP_UNNAMED("warp.set.unnamed", "&c&lHEY! &r&7Make sure to name the warp!"),
-    HOME_SUCCESS("home.success", "&7You have been warped to§a your home§7."),
+    HOME_SUCCESS("home.success", "&7You have been warped to&a your home&7."),
     HOME_NOTFOUND("home.notfound", "&c&lHEY! &r&7Make sure to set your home first!"),
-    HOME_SET_SUCCESS("home.set.success", "&7You have set the location of §ayour home§7.");
+    HOME_SET_SUCCESS("home.set.success", "&7You have set the location of &ayour home&7.");
 
     private final String key;
     private final String defaultValue;
