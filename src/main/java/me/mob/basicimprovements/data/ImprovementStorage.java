@@ -12,7 +12,7 @@ public class ImprovementStorage {
     public static FileConfiguration data;
     public static File dataFile;
 
-    private static final BasicImprovements pl = BasicImprovements.getInstance;
+    private static final BasicImprovements pl = BasicImprovements.getInstance();
 
     public BasicImprovements bi;
 
@@ -27,7 +27,7 @@ public class ImprovementStorage {
         if (!pl.getDataFolder().exists()) {
             pl.getDataFolder().mkdirs();
         }
-        dataFile = new File("plugins/BasicImprovements/data.yml");
+        dataFile = new File(pl.getDataFolder(), "data.yml");
         if (!dataFile.exists()) {
             try {
                 dataFile.createNewFile();

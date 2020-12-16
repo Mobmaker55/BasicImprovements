@@ -11,7 +11,11 @@ import java.util.HashMap;
 
 public final class BasicImprovements extends JavaPlugin {
 
-    public static BasicImprovements getInstance;
+    private static BasicImprovements INSTANCE;
+    public static BasicImprovements getInstance() {
+        return INSTANCE;
+    }
+
     public ImprovementStorage improvementStorage;
 
     public HashMap<String, Location> publicWarps = new HashMap<>();
@@ -22,11 +26,11 @@ public final class BasicImprovements extends JavaPlugin {
 
     public boolean Econ;
 
-
     @Override
     public void onEnable() {
+        INSTANCE = this;
         this.saveDefaultConfig();
-        instanceClasses();
+        Messages.reloadLanguage();
         improvementStorage = new ImprovementStorage(this);
         Econ = getServer().getPluginManager().isPluginEnabled("BasicEcon");
         if (getConfig().getBoolean("warps")) {
@@ -46,9 +50,6 @@ public final class BasicImprovements extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new TPEvents(), this);
     }
 
-    public void instanceClasses() {
-        getInstance = this;
-    }
 
 
     @Override

@@ -1,13 +1,13 @@
 package me.mob.basicimprovements.teleports;
 
 import me.mob.basicimprovements.BasicImprovements;
-import org.bukkit.ChatColor;
+import me.mob.basicimprovements.Messages;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 public class TPRunnable implements Runnable {
 
-    private final BasicImprovements plugin = BasicImprovements.getInstance;
+    private final BasicImprovements plugin = BasicImprovements.getInstance();
     private final Player tptarg;
     private Location destination;
     private final String locname;
@@ -33,9 +33,9 @@ public class TPRunnable implements Runnable {
         plugin.backLoc.put(tptarg.getName(), tptarg.getLocation());
         tptarg.teleport(destination);
         if (locname.contentEquals(tptarg.getName().toLowerCase())) {
-            tptarg.sendMessage(ChatColor.GRAY + "You have been warped to§a your home§7.");
+            tptarg.sendMessage(Messages.HOME_SUCCESS.get());
         } else {
-            tptarg.sendMessage(ChatColor.GRAY + "You have been warped to §a" + locname + "§7.");
+            tptarg.sendMessage(Messages.WARP_SUCCESS.get(locname));
         }
         plugin.warpTasks.remove(tptarg);
 
