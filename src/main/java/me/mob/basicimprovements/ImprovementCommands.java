@@ -13,7 +13,7 @@ import java.util.UUID;
 
 public class ImprovementCommands implements CommandExecutor {
 
-    private final BasicImprovements plugin = BasicImprovements.getInstance;
+    private final BasicImprovements plugin = BasicImprovements.getInstance();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {

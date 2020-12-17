@@ -1,6 +1,7 @@
 package me.mob.basicimprovements.teleports;
 
 import me.mob.basicimprovements.BasicImprovements;
+import me.mob.basicimprovements.Messages;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -13,7 +14,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitScheduler;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -21,10 +21,8 @@ import static org.bukkit.Bukkit.getServer;
 
 public class TPCommands implements CommandExecutor, TabCompleter {
 
-    private final BasicImprovements plugin = BasicImprovements.getInstance;
+    private final BasicImprovements plugin = BasicImprovements.getInstance();
     private final BukkitScheduler scheduler = getServer().getScheduler();
-
-    HashMap<Player, Integer> warpTasks = new HashMap<>();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -38,9 +36,9 @@ public class TPCommands implements CommandExecutor, TabCompleter {
                     if (plugin.publicWarps.containsKey(locName)) {
                         int taskid = scheduler.runTaskLater(plugin, new TPRunnable(locName, player, 1), 5 * 20).getTaskId();
                         plugin.warpTasks.put(player, taskid);
-                        player.sendMessage(ChatColor.DARK_PURPLE + "Warp started§7. Stay still for §5five §7seconds, and do not take damage.");
+                        player.sendMessage(Messages.WARP_START.get());
                     } else {
-                        sender.sendMessage(ChatColor.RED + "§lHEY! §r§7That warp doesn't exist. Make sure you spelled it right, or that it exists!");
+                        sender.sendMessage(Messages.WARP_NOTFOUND.get());
                     }
                     return true;
                 }
@@ -53,10 +51,10 @@ public class TPCommands implements CommandExecutor, TabCompleter {
                         if (!plugin.warpTasks.containsKey(player)) {
                             int taskid = scheduler.runTaskLater(plugin, new TPRunnable(lc, player, 2), 20 * 5).getTaskId();
                             plugin.warpTasks.put(player, taskid);
-                            player.sendMessage(ChatColor.DARK_PURPLE + "Warp started§7. Stay still for §5five §7seconds, and do not take damage.");
+                            player.sendMessage(Messages.WARP_START.get());
                         }
                     } else {
-                        player.sendMessage(ChatColor.RED + "§lHEY! §r§7Make sure to set your spawn first!");
+                        player.sendMessage(Messages.HOME_NOTFOUND.get());
                     }
                     return true;
                 }
@@ -68,7 +66,7 @@ public class TPCommands implements CommandExecutor, TabCompleter {
                         if (!plugin.warpTasks.containsKey(player)) {
                             int taskid = scheduler.runTaskLater(plugin, new TPRunnable(player.getName(), player, 3), 20 * 5).getTaskId();
                             plugin.warpTasks.put(player, taskid);
-                            player.sendMessage(ChatColor.DARK_PURPLE + "§Warp started§7. Stay still for §5five §7seconds, and do not take damage.");
+                            player.sendMessage(Messages.WARP_START.get());
                         }
                     } else {
                         sender.sendMessage(ChatColor.RED + "§lHEY! §r§7There's nowhere to go back to!");
@@ -82,9 +80,9 @@ public class TPCommands implements CommandExecutor, TabCompleter {
                 if (args.length == 1) {
                     String locName = args[0].toLowerCase();
                     plugin.publicWarps.put(locName, player.getLocation());
-                    player.sendMessage(ChatColor.GRAY + "You have set the location of §a" + locName + "§7 to your current location.");
+                    player.sendMessage(Messages.WARP_SET_SUCCESS.get(locName));
                 } else {
-                    sender.sendMessage(ChatColor.RED + "§lHEY! §r§7Make sure to name the warp!");
+                    sender.sendMessage(Messages.WARP_UNNAMED.get());
                 }
                 return true;
             }
@@ -93,10 +91,10 @@ public class TPCommands implements CommandExecutor, TabCompleter {
                 if (args.length == 1) {
                     String locName = args[0].toLowerCase();
                     plugin.publicWarps.remove(locName);
-                    player.sendMessage(ChatColor.GRAY + "You have removed the warp§a " + locName + "§7.");
+                    player.sendMessage(Messages.WARP_DEL_SUCCESS.get(locName));
                     player.sendMessage(ChatColor.GRAY + "Well, temporarily, this doesn't work properly yet :)");
                 } else {
-                    sender.sendMessage(ChatColor.RED + "§lHEY! §r§7Make sure to name the warp!");
+                    sender.sendMessage(Messages.WARP_UNNAMED.get());
                 }
                 return true;
             }
@@ -105,7 +103,7 @@ public class TPCommands implements CommandExecutor, TabCompleter {
                 if (args.length == 0) {
                     String lc = player.getName().toLowerCase();
                     plugin.homeLocations.put(lc, player.getLocation());
-                    player.sendMessage(ChatColor.GRAY + "You have set the location of §ayour home§7.");
+                    player.sendMessage(Messages.HOME_SET_SUCCESS.get());
                     return true;
                 }
                 /*if (args.length == 1) {

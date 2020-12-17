@@ -1,8 +1,7 @@
 package me.mob.basicimprovements.teleports;
 
 import me.mob.basicimprovements.BasicImprovements;
-import org.bukkit.ChatColor;
-import org.bukkit.entity.EntityType;
+import me.mob.basicimprovements.Messages;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -10,12 +9,11 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.scheduler.BukkitScheduler;
 
-import static org.bukkit.Bukkit.getPlayer;
 import static org.bukkit.Bukkit.getServer;
 
 public class TPEvents implements Listener {
 
-    private final BasicImprovements plugin = BasicImprovements.getInstance;
+    private final BasicImprovements plugin = BasicImprovements.getInstance();
     private final BukkitScheduler scheduler = getServer().getScheduler();
     private int count = 0;
 
@@ -28,7 +26,7 @@ public class TPEvents implements Listener {
             }
             if (count >= 2) {
                 scheduler.cancelTask(plugin.warpTasks.get(event.getPlayer()));
-                event.getPlayer().sendMessage(ChatColor.RED + "§lHEY! §r§7You moved! Warp cancelled.");
+                event.getPlayer().sendMessage(Messages.WARP_CANCEL_MOVE.get());
                 plugin.warpTasks.remove(event.getPlayer());
                 count = 0;
             }
@@ -37,11 +35,11 @@ public class TPEvents implements Listener {
 
     @EventHandler
     public void playerDamage(EntityDamageEvent event) {
-        if (event.getEntity().getType() == EntityType.PLAYER) {
-            Player player = getPlayer(event.getEntity().getUniqueId());
+        if (event.getEntity() instanceof Player) {
+            Player player = (Player) event.getEntity();
             if (plugin.warpTasks.containsKey(player)) {
                 scheduler.cancelTask(plugin.warpTasks.get(player));
-                player.sendMessage(ChatColor.RED + "§lHEY! §r§7You took damage! Warp cancelled.");
+                player.sendMessage(Messages.WARP_CANCEL_DAMAGE.get());
                 plugin.warpTasks.remove(player);
             }
         }
