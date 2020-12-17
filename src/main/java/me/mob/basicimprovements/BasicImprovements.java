@@ -22,7 +22,7 @@ public final class BasicImprovements extends JavaPlugin {
     public HashMap<String, Location> homeLocations = new HashMap<>();
     public HashMap<String, Location> backLoc = new HashMap<>();
     public HashMap<Player, Integer> warpTasks = new HashMap<>();
-    public HashMap<Player, Double> tpCooldown = new HashMap<>();
+    public HashMap<Player, Double> rtpCooldown = new HashMap<>();
 
     public boolean Econ;
 
@@ -56,5 +56,6 @@ public final class BasicImprovements extends JavaPlugin {
     public void onDisable() {
         improvementStorage.savepW();
         improvementStorage.savehL();
+        improvementStorage.saveRtpCool();
     }
 }

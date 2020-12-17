@@ -122,8 +122,8 @@ public class TPCommands implements CommandExecutor, TabCompleter {
             }
             if (command.getName().equalsIgnoreCase("randomtp")) {
                 double timestamp = System.currentTimeMillis();
-                if (plugin.tpCooldown.containsKey(player)) {
-                    double pTPC = plugin.tpCooldown.get(player);
+                if (plugin.rtpCooldown.containsKey(player)) {
+                    double pTPC = plugin.rtpCooldown.get(player);
                     if (pTPC >= (timestamp - 3600000)) {
                         double remaining = (double) Math.round((60-((timestamp - pTPC)/60000)) * 10) / 10;
                         player.sendMessage(ChatColor.RED + "You can't run this command yet! You still have " + ChatColor.GOLD + remaining + ChatColor.RED + " minutes left!");
@@ -150,7 +150,7 @@ public class TPCommands implements CommandExecutor, TabCompleter {
                                         if (!loc.getBlock().isLiquid()) {
                                             loc.setY(i-5);
                                             player.teleport(loc);
-                                            plugin.tpCooldown.put(player, timestamp);
+                                            plugin.rtpCooldown.put(player, timestamp);
                                             return true;
                                         } else {
                                             safe = 0;

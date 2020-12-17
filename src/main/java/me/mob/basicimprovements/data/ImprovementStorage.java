@@ -1,12 +1,15 @@
 package me.mob.basicimprovements.data;
 
 import me.mob.basicimprovements.BasicImprovements;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 
 import java.io.File;
+import java.util.UUID;
 
 public class ImprovementStorage {
     public static FileConfiguration data;
@@ -21,6 +24,7 @@ public class ImprovementStorage {
         getData();
         loadpW();
         loadhL();
+        loadRtpCool();
     }
 
     public static void getData() {
@@ -58,10 +62,34 @@ public class ImprovementStorage {
         }
     }
 
+    public void loadRtpCool() {
+        ConfigurationSection section = data.getConfigurationSection("rtpCooldown");
+        if (section != null) {
+            section.getKeys(false).forEach(key -> {
+                Double cooldown = section.getDouble(key);
+                Player pKey = Bukkit.getPlayer(UUID.fromString(key));
+                pl.rtpCooldown.put(pKey, cooldown);
+            });
+        }
+    }
+
     public void savepW() {
         if (!pl.publicWarps.isEmpty()) {
             if (pl.publicWarps.size() > 0) {
                 pl.publicWarps.forEach((key, value) -> data.set("publicWarps." + key, value));
+                try {
+                    data.save(dataFile);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public void saveRtpCool() {
+        if (!pl.rtpCooldown.isEmpty()) {
+            if (pl.rtpCooldown.size() > 0) {
+                pl.rtpCooldown.forEach((key, value) -> data.set("rtpCooldown." + key.getUniqueId(), value));
                 try {
                     data.save(dataFile);
                 } catch (Exception e) {
@@ -85,4 +113,6 @@ public class ImprovementStorage {
             }
         }
     }
+
+
 }
