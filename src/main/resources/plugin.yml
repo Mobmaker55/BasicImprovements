@@ -51,6 +51,12 @@ commands:
     usage: |
       /<command> - Teleports you somewhere.
 
+  broadcast:
+    description: Broadcast a message to everyone
+    aliases: [bc]
+    permission: basicimprovements.admin
+    usage: /<command> [message] - Shouts a message.
+
 permissions:
   basicimprovements.admin:
     description: The stub that lets you use admin commands.

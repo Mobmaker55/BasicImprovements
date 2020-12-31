@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Random;
 
 import static org.bukkit.Bukkit.getServer;
+import static org.bukkit.Bukkit.getWorld;
 
 public class TPCommands implements CommandExecutor, TabCompleter {
 
@@ -34,7 +35,7 @@ public class TPCommands implements CommandExecutor, TabCompleter {
                 if (args.length == 1) {
                     String locName = args[0].toLowerCase();
                     if (plugin.publicWarps.containsKey(locName)) {
-                        int taskid = scheduler.runTaskLater(plugin, new TPRunnable(locName, player, 1), 5 * 20).getTaskId();
+                        int taskid = scheduler.runTaskLater(plugin, new TPRunnable(plugin.publicWarps.get(locName), player, Messages.WARP_SUCCESS), 5 * 20).getTaskId();
                         plugin.warpTasks.put(player, taskid);
                         player.sendMessage(Messages.WARP_START.get());
                     } else {
@@ -49,7 +50,7 @@ public class TPCommands implements CommandExecutor, TabCompleter {
                     String lc = player.getName().toLowerCase();
                     if (plugin.homeLocations.containsKey(lc)) {
                         if (!plugin.warpTasks.containsKey(player)) {
-                            int taskid = scheduler.runTaskLater(plugin, new TPRunnable(lc, player, 2), 20 * 5).getTaskId();
+                            int taskid = scheduler.runTaskLater(plugin, new TPRunnable(plugin.homeLocations.get(lc), player, Messages.HOME_SUCCESS), 20 * 5).getTaskId();
                             plugin.warpTasks.put(player, taskid);
                             player.sendMessage(Messages.WARP_START.get());
                         }
@@ -64,12 +65,12 @@ public class TPCommands implements CommandExecutor, TabCompleter {
                 if (args.length == 0) {
                     if (plugin.backLoc.containsKey(player.getName())) {
                         if (!plugin.warpTasks.containsKey(player)) {
-                            int taskid = scheduler.runTaskLater(plugin, new TPRunnable(player.getName(), player, 3), 20 * 5).getTaskId();
+                            int taskid = scheduler.runTaskLater(plugin, new TPRunnable(plugin.backLoc.get(player.getName()), player, Messages.BACK_NOTFOUND), 20 * 5).getTaskId();
                             plugin.warpTasks.put(player, taskid);
                             player.sendMessage(Messages.WARP_START.get());
                         }
                     } else {
-                        sender.sendMessage(ChatColor.RED + "§lHEY! §r§7There's nowhere to go back to!");
+                        sender.sendMessage(Messages.BACK_NOTFOUND.get());
                     }
                     return true;
                 }
@@ -122,16 +123,20 @@ public class TPCommands implements CommandExecutor, TabCompleter {
             }
             if (command.getName().equalsIgnoreCase("randomtp")) {
                 double timestamp = System.currentTimeMillis();
-                if (plugin.tpCooldown.containsKey(player)) {
-                    double pTPC = plugin.tpCooldown.get(player);
+                if (plugin.tpCooldown.containsKey(player.getName())) {
+                    double pTPC = plugin.tpCooldown.get(player.getName());
                     if (pTPC >= (timestamp - 3600000)) {
                         double remaining = (double) Math.round((60-((timestamp - pTPC)/60000)) * 10) / 10;
-                        player.sendMessage(ChatColor.RED + "You can't run this command yet! You still have " + ChatColor.GOLD + remaining + ChatColor.RED + " minutes left!");
+                        player.sendMessage(Messages.RTP_COOLDOWN.get(String.valueOf(remaining)));
                         return true;
                     }
                 }
                 Random rand = new Random();
-                World world = player.getWorld();
+                if (!player.getWorld().equals(getWorld("world"))) {
+                    player.sendMessage(Messages.WARP_WRONGWORLD.get("world"));
+                    return true;
+                }
+                World world = getServer().getWorld("world");
                 if (args.length == 0) {
                     int safe = 0;
                     while (true) {
@@ -149,8 +154,10 @@ public class TPCommands implements CommandExecutor, TabCompleter {
                                     if (!loc.getBlock().isEmpty()) {
                                         if (!loc.getBlock().isLiquid()) {
                                             loc.setY(i-5);
-                                            player.teleport(loc);
-                                            plugin.tpCooldown.put(player, timestamp);
+                                            int taskid = scheduler.runTaskLater(plugin, new TPRunnable(loc, player, Messages.RTP_SUCCESS), 20 * 5).getTaskId();
+                                            plugin.warpTasks.put(player, taskid);
+                                            player.sendMessage(Messages.WARP_START.get());
+                                            plugin.tpCooldown.put(player.getName(), timestamp);
                                             return true;
                                         } else {
                                             safe = 0;

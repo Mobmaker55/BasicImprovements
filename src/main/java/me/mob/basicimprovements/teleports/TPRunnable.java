@@ -5,39 +5,39 @@ import me.mob.basicimprovements.Messages;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
+import java.util.Objects;
+
 public class TPRunnable implements Runnable {
 
     private final BasicImprovements plugin = BasicImprovements.getInstance();
     private final Player tptarg;
-    private Location destination;
-    private final String locname;
+    private final Location destination;
+    private final Messages tpMessage;
+    private Boolean isBack = false;
 
-    public TPRunnable(String location, Player player, int loctype) {
+    public TPRunnable(Location location, Player player, Messages msgKey) {
         tptarg = player;
-        locname = location;
-        switch(loctype) {
-            case 1:
-                destination = plugin.publicWarps.get(location);
-                break;
-            case 2:
-                destination = plugin.homeLocations.get(location);
-                break;
-            case 3:
-                destination = plugin.backLoc.get(location);
-                break;
+        destination = location;
+        tpMessage = msgKey;
+        if (msgKey.equals(Messages.BACK_SUCCESS)) {
+            isBack = true;
         }
     }
 
     @Override
     public void run() {
-        plugin.backLoc.put(tptarg.getName(), tptarg.getLocation());
-        tptarg.teleport(destination);
-        if (locname.contentEquals(tptarg.getName().toLowerCase())) {
-            tptarg.sendMessage(Messages.HOME_SUCCESS.get());
+        if (isBack) {
+            plugin.backLoc.remove(tptarg.getName());
         } else {
-            tptarg.sendMessage(Messages.WARP_SUCCESS.get(locname));
+            plugin.backLoc.put(tptarg.getName(), tptarg.getLocation());
         }
-        plugin.warpTasks.remove(tptarg);
+        if (destination.getWorld() == tptarg.getWorld()) {
+            tptarg.teleport(destination);
+            plugin.warpTasks.remove(tptarg);
+            tptarg.sendMessage(tpMessage.get());
+        } else {
+            tptarg.sendMessage(Messages.WARP_WRONGWORLD.get(Objects.requireNonNull(destination.getWorld()).getName()));
+        }
 
     }
 }

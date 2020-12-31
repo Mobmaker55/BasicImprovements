@@ -1,8 +1,10 @@
 package me.mob.basicimprovements;
 
+import me.mob.basicimprovements.chats.MessageCommands;
 import me.mob.basicimprovements.data.ImprovementStorage;
 import me.mob.basicimprovements.teleports.TPCommands;
 import me.mob.basicimprovements.teleports.TPEvents;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -22,7 +24,7 @@ public final class BasicImprovements extends JavaPlugin {
     public HashMap<String, Location> homeLocations = new HashMap<>();
     public HashMap<String, Location> backLoc = new HashMap<>();
     public HashMap<Player, Integer> warpTasks = new HashMap<>();
-    public HashMap<Player, Double> tpCooldown = new HashMap<>();
+    public HashMap<String, Double> tpCooldown = new HashMap<>();
 
     public boolean Econ;
 
@@ -47,10 +49,13 @@ public final class BasicImprovements extends JavaPlugin {
         this.getCommand("ping").setExecutor(new ImprovementCommands());
         this.getCommand("playtime").setExecutor(new ImprovementCommands());
         this.getCommand("randomtp").setExecutor(new TPCommands());
+        this.getCommand("broadcast").setExecutor(new MessageCommands());
         getServer().getPluginManager().registerEvents(new TPEvents(), this);
     }
 
-
+    public static String color(String s) {
+        return ChatColor.translateAlternateColorCodes('&', s);
+    }
 
     @Override
     public void onDisable() {

@@ -10,14 +10,20 @@ public enum Messages {
     WARP_START("warp.start", "&5Warp started&7. Stay still for &5five &7seconds, and do not take damage."),
     WARP_SUCCESS("warp.success", "You have been warped to &a{0}&7."),
     WARP_NOTFOUND("warp.notfound", "&c&lHEY! &r&7That warp doesn't exist. Make sure you spelled it right, or that it exists!"),
+    WARP_UNNAMED("warp.set.unnamed", "&c&lHEY! &r&7Make sure to name the warp!"),
+    WARP_WRONGWORLD("warp.wrongworld","&c&lHEY! &r&7You need to be in world&a {0}&7 to warp here."),
     WARP_SET_SUCCESS("warp.set.success", "&7You have set the location of &a{0}&7 to your current location."),
     WARP_DEL_SUCCESS("warp.del.success", "&7You have removed the warp&a {0}&7."),
     WARP_CANCEL_MOVE("warp.cancel.move", "&c&lHEY! &r&7You moved! Warp cancelled."),
     WARP_CANCEL_DAMAGE("warp.cancel.damage", "&c&lHEY! &r&7You took damage! Warp cancelled."),
-    WARP_UNNAMED("warp.set.unnamed", "&c&lHEY! &r&7Make sure to name the warp!"),
+    BACK_SUCCESS("back.success", "&7You have been warped to&a your previous location&7."),
+    BACK_NOTFOUND("back.notfound", "&c&lHEY! &r&7 There's nowhere for you to return to!"),
+    RTP_SUCCESS("rtp.success", "&7You are now at a new&a random location&7."),
+    RTP_COOLDOWN("rtp.cooldown","&cYou can't run this command yet! You still have&6 {0}&c minutes remaining!"),
     HOME_SUCCESS("home.success", "&7You have been warped to&a your home&7."),
     HOME_NOTFOUND("home.notfound", "&c&lHEY! &r&7Make sure to set your home first!"),
-    HOME_SET_SUCCESS("home.set.success", "&7You have set the location of &ayour home&7.");
+    HOME_SET_SUCCESS("home.set.success", "&7You have set the location of&a your home&7."),
+    PLUGIN_PREFIX("prefix", "&8[&6&lBroadcast&r&8]&f");
 
     private final String key;
     private final String defaultValue;
