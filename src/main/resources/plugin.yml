@@ -52,10 +52,22 @@ commands:
       /<command> - Teleports you somewhere.
 
   broadcast:
-    description: Broadcast a message to everyone
+    description: Broadcast a message to everyone.
     aliases: [bc]
     permission: basicimprovements.admin
     usage: /<command> [message] - Shouts a message.
+
+  basicreload:
+    description: Reloads all assets for the plugin.
+    aliases: [bireload]
+    permission: basicimprovements.admin
+    usage: /<command> - Reloads plugin assets.
+
+  statistic:
+    description: Obtain the statistic of any player
+    usage: |
+      /<command> [value] - Get your statistic for this value!
+      /<command> [player] [message] - Get any player's statistic for this value!
 
 permissions:
   basicimprovements.admin:

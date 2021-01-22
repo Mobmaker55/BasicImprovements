@@ -1,4 +1,4 @@
-package me.mob.basicimprovements.data;
+package me.mob.basicimprovements.statistics;
 
 import org.bukkit.Bukkit;
 import org.json.simple.JSONObject;
@@ -8,7 +8,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.UUID;
 
-public class ImprovementData {
+public class StatisticData {
 
     public static long getPlayerStatistic(UUID player, String stat) {
         File worldFolder = new File(Bukkit.getServer().getWorlds().get(0).getWorldFolder(), "stats"); //obtain stats folder of World
@@ -29,6 +29,9 @@ public class ImprovementData {
             try {
                 primary = (JSONObject) jsonObject.get("stats"); //use the first Object to get the stats
                 secondary = (JSONObject) primary.get("minecraft:custom"); //use the second object to get the 'custom' data
+                for (Object o : secondary.entrySet()) {
+                    o.getClass(); //cache the classes in memory
+                }
                 String third = secondary.get("minecraft:" + stat).toString(); //get the requested statistic of the player
                 return Long.parseLong(third); //return the requested statistic
             } catch (Exception e) {
@@ -38,8 +41,8 @@ public class ImprovementData {
         return 0L;
     }
 
-    public static double round (double value, int precision) {
-        int scale = (int) Math.pow(10, precision);
+    public static double round (double value, double precision) {
+        double scale = Math.pow(10, precision);
         return (double) Math.round(value * scale) / scale;
     }
 }

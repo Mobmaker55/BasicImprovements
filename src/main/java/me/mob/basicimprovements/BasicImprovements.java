@@ -2,6 +2,8 @@ package me.mob.basicimprovements;
 
 import me.mob.basicimprovements.chats.MessageCommands;
 import me.mob.basicimprovements.data.ImprovementStorage;
+import me.mob.basicimprovements.statistics.PlaytimeCommand;
+import me.mob.basicimprovements.statistics.StatisticCommand;
 import me.mob.basicimprovements.teleports.TPCommands;
 import me.mob.basicimprovements.teleports.TPEvents;
 import org.bukkit.ChatColor;
@@ -47,9 +49,11 @@ public final class BasicImprovements extends JavaPlugin {
             this.getCommand("back").setExecutor(new TPCommands());
         }
         this.getCommand("ping").setExecutor(new ImprovementCommands());
-        this.getCommand("playtime").setExecutor(new ImprovementCommands());
+        this.getCommand("playtime").setExecutor(new PlaytimeCommand());
         this.getCommand("randomtp").setExecutor(new TPCommands());
         this.getCommand("broadcast").setExecutor(new MessageCommands());
+        this.getCommand("basicreload").setExecutor(new ImprovementCommands());
+        this.getCommand("statistic").setExecutor(new StatisticCommand());
         getServer().getPluginManager().registerEvents(new TPEvents(), this);
     }
 
